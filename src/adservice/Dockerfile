@@ -29,10 +29,15 @@ RUN ./gradlew installDist
 RUN ARCH="$(dpkg --print-architecture)"
 ENV "$ARCH"=aarch64|arm64
 
-FROM eclipse-temurin:19.0.2_7-jre-focal as without-grpc-health-probe-bin 
-RUN apt-get install ca-certificates 
-FROM eclipse-temurin:19.0.1_10-jre-alpine@sha256:a75ea64f676041562cd7d3a54a9764bbfb357b2bf1bebf46e2af73e62d32e36c as without-grpc-health-probe-bin
-RUN apk add --no-cache ca-certificates
+RUN if [[ "uname -m"=aarch64]]; then \
+  base_image="eclipse-temurin:19.0.2_7-jre-focal" \
+  else \
+  base_image="eclipse-temurin:19.0.1_10-jre-alpine@sha256:a75ea64f676041562cd7d3a54a9764bbfb357b2bf1bebf46e2af73e62d32e36c"; \
+  echo $(base_image); \
+  fi
+FROM ${base_image} as without-grpc-health-probe-bin
+
+
 
 
 # Download Stackdriver Profiler Java agent
