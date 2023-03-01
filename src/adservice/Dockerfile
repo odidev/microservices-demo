@@ -25,20 +25,9 @@ COPY . .
 RUN chmod +x gradlew
 RUN ./gradlew installDist
 
+FROM eclipse-temurin:19.0.2_7-jre-focal as without-grpc-health-probe-bin
 
-RUN ARCH="$(dpkg --print-architecture)"
-ENV "$ARCH"=aarch64|arm64
-
-RUN if [[ "uname -m"=aarch64]]; then \
-  base_image="eclipse-temurin:19.0.2_7-jre-focal" \
-  else \
-  base_image="eclipse-temurin:19.0.1_10-jre-alpine@sha256:a75ea64f676041562cd7d3a54a9764bbfb357b2bf1bebf46e2af73e62d32e36c"; \
-  echo $(base_image); \
-  fi
-FROM ${base_image} as without-grpc-health-probe-bin
-
-
-
+RUN apk add --no-cache ca-certificates
 
 # Download Stackdriver Profiler Java agent
 RUN mkdir -p /opt/cprof && \
@@ -65,5 +54,5 @@ FROM without-grpc-health-probe-bin
 
 # renovate: datasource=github-releases depName=grpc-ecosystem/grpc-health-probe
 RUN GRPC_HEALTH_PROBE_VERSION=v0.4.14 && \
-    wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
+    wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-arm64 && \
     chmod +x /bin/grpc_health_probe
