@@ -47,7 +47,7 @@ spec:
               - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: gcr.io/google-samples/microservices-demo/emailservice:v0.5.1
+        image: priyaa221/emailservice:arm
         ports:
         - containerPort: 8080
         env:
@@ -112,7 +112,7 @@ spec:
                 - all
             privileged: false
             readOnlyRootFilesystem: true
-          image: gcr.io/google-samples/microservices-demo/checkoutservice:v0.5.1
+          image: priyaa221/checkout:arm
           ports:
           - containerPort: 5050
           readinessProbe:
@@ -186,7 +186,7 @@ spec:
               - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: gcr.io/google-samples/microservices-demo/recommendationservice:v0.5.1
+        image: priyaa221/recommendationservice:arm
         ports:
         - containerPort: 8080
         readinessProbe:
@@ -255,7 +255,7 @@ spec:
                 - all
             privileged: false
             readOnlyRootFilesystem: true
-          image: gcr.io/google-samples/microservices-demo/frontend:v0.5.1
+          image: priyaa221/frontend:arm
           ports:
           - containerPort: 8080
           readinessProbe:
@@ -362,7 +362,7 @@ spec:
               - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: gcr.io/google-samples/microservices-demo/paymentservice:v0.5.1
+        image: priyaa221/paymentservice:arm
         ports:
         - containerPort: 50051
         env:
@@ -426,7 +426,7 @@ spec:
               - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: gcr.io/google-samples/microservices-demo/productcatalogservice:v0.5.1
+        image: priyaa221/recommendationservice:arm
         ports:
         - containerPort: 3550
         env:
@@ -490,7 +490,7 @@ spec:
               - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: gcr.io/google-samples/microservices-demo/cartservice:v0.5.1
+        image: priyaa221/cartservice:arm
         ports:
         - containerPort: 7070
         env:
@@ -582,7 +582,7 @@ spec:
               - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: gcr.io/google-samples/microservices-demo/loadgenerator:v0.5.1
+        image: priyaa221/loadgenerator:arm
         env:
         - name: FRONTEND_ADDR
           value: "frontend:80"
@@ -625,7 +625,7 @@ spec:
               - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: gcr.io/google-samples/microservices-demo/currencyservice:v0.5.1
+        image: priyaa221/currencyservice:arm
         ports:
         - name: grpc
           containerPort: 7000
@@ -689,7 +689,7 @@ spec:
               - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: gcr.io/google-samples/microservices-demo/shippingservice:v0.5.1
+        image: priyaa221/shippingservice:arm
         ports:
         - containerPort: 50051
         env:
@@ -819,7 +819,7 @@ spec:
               - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: gcr.io/google-samples/microservices-demo/adservice:v0.5.1
+        image: priyaa221/adservice_arm:copy_tar
         ports:
         - containerPort: 9555
         env:
