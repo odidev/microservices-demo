@@ -45,3 +45,23 @@ variable "memorystore" {
   type        = bool
   description = "If true, Online Boutique's in-cluster Redis cache will be replaced with a Google Cloud Memorystore Redis cache"
 }
+
+variable "gke_regional" {
+type = bool
+description = "Gke regional"
+}
+
+variable "gke_zones" {
+type = list(string)
+description = "list of zones"
+}
+
+variable "gke_network" {
+type = string
+description = "vpc network"
+}
+
+variable "gke_subnetwork" {
+type = string
+description = "vpc subnetwork"
+}
