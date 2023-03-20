@@ -47,7 +47,7 @@ module "gke" {
   node_pools = [
     {
       name                      = "default-node-pool"
-      machine_type              = "t2a-standard-1"
+      machine_type              = "t2a-standard-4"
       min_count                 = 1
       max_count                 = 100
       autoscaling               = true
