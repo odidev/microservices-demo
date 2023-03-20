@@ -28,33 +28,83 @@ locals {
   cluster_name = element(local.cluster_id_parts, length(local.cluster_id_parts) - 1)
 }
 
-# Enable Google Cloud APIs
-module "enable_google_apis" {
-  source  = "terraform-google-modules/project-factory/google//modules/project_services"
-  version = "~> 14.0"
+module "gke" {
+  source                     = "terraform-google-modules/kubernetes-engine/google"
+  project_id                 = var.gcp_project_id
+  name                       = var.name
+  region                     = var.region
+  regional                   = var.gke_regional
+  zones                      = var.gke_zones
+  network                    = var.gke_network
+  subnetwork                 = var.gke_subnetwork
+  ip_range_pods              = ""
+  ip_range_services          = ""
+  http_load_balancing        = false
+  network_policy             = false
+  horizontal_pod_autoscaling = true
+  filestore_csi_driver       = false
 
-  project_id                  = var.gcp_project_id
-  disable_services_on_destroy = false
+  node_pools = [
+    {
+      name                      = "default-node-pool"
+      machine_type              = "t2a-standard-1"
+      min_count                 = 1
+      max_count                 = 100
+      autoscaling               = true
+      spot                      = false
+      disk_size_gb              = 100
+      disk_type                 = "pd-standard"
+      image_type                = "COS_CONTAINERD"
+      auto_repair               = true
+      auto_upgrade              = true
+      service_account           = "988280927690-compute@developer.gserviceaccount.com"
+      preemptible               = false
+      initial_node_count        = 1
+    },
+  ]
 
-  # activate_apis is the set of base_apis and the APIs required by user-configured deployment options
-  activate_apis = concat(local.base_apis, var.memorystore ? local.memorystore_apis : [])
-}
-
-# Create GKE cluster
-resource "google_container_cluster" "my_cluster" {
-  name     = var.name
-  location = var.region
-
-  # Enabling autopilot for this cluster
-  enable_autopilot = true
-
-  # Setting an empty ip_allocation_policy to allow autopilot cluster to spin up correctly
-  ip_allocation_policy {
+  node_pools_oauth_scopes = {
+    all = [
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+    ]
   }
 
-  depends_on = [
-    module.enable_google_apis
-  ]
+  node_pools_labels = {
+    all = {}
+
+    default-node-pool = {
+      default-node-pool = true
+    }
+  }
+
+  node_pools_metadata = {
+    all = {}
+
+    default-node-pool = {
+      node-pool-metadata-custom-value = "my-node-pool"
+    }
+  }
+
+  node_pools_taints = {
+    all = []
+
+    default-node-pool = [
+      {
+        key    = "default-node-pool"
+        value  = true
+        effect = "PREFER_NO_SCHEDULE"
+      },
+    ]
+  }
+
+  node_pools_tags = {
+    all = []
+
+    default-node-pool = [
+      "default-node-pool",
+    ]
+  }
 }
 
 # Get credentials for cluster
