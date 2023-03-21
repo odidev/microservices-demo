@@ -45,11 +45,10 @@ FROM without-grpc-health-probe-bin
 
 # renovate: datasource=github-releases depName=grpc-ecosystem/grpc-health-probe
 RUN GRPC_HEALTH_PROBE_VERSION=v0.4.14 && \
-	ARCH="$(dpkg --print-architecture)"; \
-    if ["${ARCH}"==aarch64|arm64]; then \
+    if ['uname -m' == arm64]; then \
 	    wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-arm64; \
         chmod +x /bin/grpc_health_probe; \
     else \
-	    wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-arm64; \
+	    wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64; \
         chmod +x /bin/grpc_health_probe; \
         fi
