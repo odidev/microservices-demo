@@ -539,7 +539,7 @@ spec:
               - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: priyaa221/loadgenerator:arm
+        image: priyaa221/loadgenerator:new
         env:
         - name: FRONTEND_ADDR
           value: "frontend:80"
@@ -576,7 +576,7 @@ spec:
               - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: priyaa221/currencyservice:arm
+        image: priyaa221/currency:new
         ports:
         - name: grpc
           containerPort: 7000
@@ -634,7 +634,7 @@ spec:
               - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: priyaa221/shippingservice:arm
+        image: priyaa221/shipping:new
         ports:
         - containerPort: 50051
         env:
