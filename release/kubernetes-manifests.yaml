@@ -47,7 +47,7 @@ spec:
               - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: priyaa221/emailservice:arm
+        image: priyaa221/emailamd:new
         ports:
         - containerPort: 8080
         env:
