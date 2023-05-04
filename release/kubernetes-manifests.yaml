@@ -454,7 +454,7 @@ spec:
               - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: priyaa221/cartservice:arm
+        image: priyaa221/cartamd:new
         ports:
         - containerPort: 7070
         env:
