@@ -237,7 +237,7 @@ spec:
                 - all
             privileged: false
             readOnlyRootFilesystem: true
-          image: priyaa221/frontend:arm
+          image: priyaa221/frontamd:new
           ports:
           - containerPort: 8080
           readinessProbe:
