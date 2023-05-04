@@ -106,7 +106,7 @@ spec:
                 - all
             privileged: false
             readOnlyRootFilesystem: true
-          image: priyaa221/checkout:arm
+          image: priyaa221/checkoutamd:new
           ports:
           - containerPort: 5050
           readinessProbe:
