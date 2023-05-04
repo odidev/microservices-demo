@@ -396,7 +396,7 @@ spec:
               - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: priyaa221/productcatalogservice:arm
+        image: priyaa221/productcatalamd:new
         ports:
         - containerPort: 3550
         env:
