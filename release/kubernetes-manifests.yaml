@@ -338,7 +338,7 @@ spec:
               - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: priyaa221/paymentservice:arm
+        image: priyaa221/paymentserviceamd:new
         ports:
         - containerPort: 50051
         env:
