@@ -11,12 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-ENV IMG
-RUN if [ `uname -m` = "aarch64" ] ; then \
-            IMG=7.0.103; \
-    else \
-            IMG=7.0.203@sha256:a06d87abe11238f2fbc076149edfbf91e88f06f54ab9c7282824e346322b8665; \
-    fi
+ARG IMG
 
 # https://mcr.microsoft.com/v2/dotnet/sdk/tags/list
 FROM mcr.microsoft.com/dotnet/sdk:$IMG as builder
@@ -33,7 +28,7 @@ COPY . .
 RUN dotnet publish cartservice.csproj -p:PublishSingleFile=true -r linux-musl-$arch --self-contained true -p:PublishTrimmed=True -p:TrimMode=Link -c release -o /cartservice --no-restore
 
 # https://mcr.microsoft.com/v2/dotnet/runtime-deps/tags/list
-ENV tag
+ARG tag
 RUN if [ `uname -m` = "aarch64" ] ; then \
             tag=7.0.3-alpine3.16-arm64v8; \
     else \
