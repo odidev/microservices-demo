@@ -11,17 +11,25 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+ARG Img_Tag
 
 # https://mcr.microsoft.com/v2/dotnet/sdk/tags/list
-FROM mcr.microsoft.com/dotnet/sdk:7.0.103 as builder
+FROM mcr.microsoft.com/dotnet/sdk:$Img_Tag as builder
 WORKDIR /app
 COPY cartservice.csproj .
-RUN dotnet restore cartservice.csproj -r linux-musl-arm64
+ENV arch
+RUN if [ `uname -m` = "aarch64" ] ; then \
+            arch=arm64; \
+    else \
+            arch=x64; \
+    fi
+RUN dotnet restore cartservice.csproj -r linux-musl-$arch
 COPY . .
-RUN dotnet publish cartservice.csproj -p:PublishSingleFile=true -r linux-musl-arm64 --self-contained true -p:PublishTrimmed=True -p:TrimMode=Link -c release -o /cartservice --no-restore
+RUN dotnet publish cartservice.csproj -p:PublishSingleFile=true -r linux-musl-$arch --self-contained true -p:PublishTrimmed=True -p:TrimMode=Link -c release -o /cartservice --no-restore
 
 # https://mcr.microsoft.com/v2/dotnet/runtime-deps/tags/list
-FROM mcr.microsoft.com/dotnet/runtime-deps:7.0.3-alpine3.16-arm64v8  as without-grpc-health-probe-bin
+ARG tag
+FROM mcr.microsoft.com/dotnet/runtime-deps:$tag  as without-grpc-health-probe-bin
 
 WORKDIR /app
 COPY --from=builder /cartservice .
@@ -34,7 +42,11 @@ ENTRYPOINT ["/app/cartservice"]
 FROM without-grpc-health-probe-bin
 USER root
 # renovate: datasource=github-releases depName=grpc-ecosystem/grpc-health-probe
-RUN GRPC_HEALTH_PROBE_VERSION=v0.4.14 && \
-    wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-arm64 && \
-    chmod +x /bin/grpc_health_probe
+RUN if [ `uname -m` = "aarch64" ] ; then \
+            wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.4.14/grpc_health_probe-linux-arm64; \
+        chmod +x /bin/grpc_health_probe; \
+    else \
+            wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.4.14/grpc_health_probe-linux-amd64; \
+        chmod +x /bin/grpc_health_probe; \
+    fi
 USER 1000
