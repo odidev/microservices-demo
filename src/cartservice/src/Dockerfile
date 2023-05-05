@@ -11,10 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-ARG Img_Tag
+ENV IMG
+RUN if [ `uname -m` = "aarch64" ] ; then \
+            IMG=7.0.103; \
+    else \
+            IMG=7.0.203@sha256:a06d87abe11238f2fbc076149edfbf91e88f06f54ab9c7282824e346322b8665; \
+    fi
 
 # https://mcr.microsoft.com/v2/dotnet/sdk/tags/list
-FROM mcr.microsoft.com/dotnet/sdk:$Img_Tag as builder
+FROM mcr.microsoft.com/dotnet/sdk:$IMG as builder
 WORKDIR /app
 COPY cartservice.csproj .
 ENV arch
@@ -28,7 +33,12 @@ COPY . .
 RUN dotnet publish cartservice.csproj -p:PublishSingleFile=true -r linux-musl-$arch --self-contained true -p:PublishTrimmed=True -p:TrimMode=Link -c release -o /cartservice --no-restore
 
 # https://mcr.microsoft.com/v2/dotnet/runtime-deps/tags/list
-ARG tag
+ENV tag
+RUN if [ `uname -m` = "aarch64" ] ; then \
+            tag=7.0.3-alpine3.16-arm64v8; \
+    else \
+            tag=7.0.4-alpine3.16-amd64@sha256:7141eea9c7be5f4d2f09df427ba37620e50be150fc93015288b3e26c5071af81; \
+    fi
 FROM mcr.microsoft.com/dotnet/runtime-deps:$tag  as without-grpc-health-probe-bin
 
 WORKDIR /app
