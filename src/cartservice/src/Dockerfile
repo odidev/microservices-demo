@@ -17,7 +17,7 @@ ARG IMG
 FROM mcr.microsoft.com/dotnet/sdk:$IMG as builder
 WORKDIR /app
 COPY cartservice.csproj .
-ENV arch
+ARG arch
 RUN if [ `uname -m` = "aarch64" ] ; then \
             arch=arm64; \
     else \
