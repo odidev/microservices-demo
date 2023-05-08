@@ -28,8 +28,11 @@ RUN if [ `uname -m` =="aarch64" ] ; then \
             dotnet publish cartservice.csproj -p:PublishSingleFile=true -r linux-musl-x64 --self-contained true -p:PublishTrimmed=True -p:TrimMode=Link -c release -o /cartservice --no-restore;\
     fi
 
+ARG TAG=7.0.4-alpine3.16-amd64
+ARG TAG=7.0.4-alpine3.16-arm64v8
+
 # https://mcr.microsoft.com/v2/dotnet/runtime-deps/tags/list
-FROM mcr.microsoft.com/dotnet/runtime-deps:7.0.4 as without-grpc-health-probe-bin
+FROM mcr.microsoft.com/dotnet/runtime-deps:$TAG as without-grpc-health-probe-bin
 
 WORKDIR /app
 COPY --from=builder /cartservice .
