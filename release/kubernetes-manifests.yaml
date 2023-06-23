@@ -364,7 +364,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: gcr.io/google-samples/microservices-demo/paymentservice:v0.8.0
+        image: priyaa221/payment_arm_amd:latest
         ports:
         - containerPort: 50051
         env:
