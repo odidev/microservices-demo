@@ -25,9 +25,9 @@ COPY . .
 RUN chmod +x gradlew
 RUN ./gradlew installDist
 
-FROM eclipse-temurin:19.0.1_10-jre-alpine
+FROM eclipse-temurin:19.0.1_10-jre-focal
 
-RUN apk add --no-cache ca-certificates
+RUN apt-get install ca-certificates -y
 
 # Download Stackdriver Profiler Java agent
 RUN mkdir -p /opt/cprof
