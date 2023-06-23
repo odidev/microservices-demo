@@ -428,7 +428,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: gcr.io/google-samples/microservices-demo/productcatalogservice:v0.8.0
+        image: priyaa221/productcatalogs_arm_amd:latest
         ports:
         - containerPort: 3550
         env:
