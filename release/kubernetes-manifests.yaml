@@ -112,7 +112,7 @@ spec:
                 - ALL
             privileged: false
             readOnlyRootFilesystem: true
-          image: gcr.io/google-samples/microservices-demo/checkoutservice:v0.8.0
+          image: priyaa221/checkout_arm_amd:latest
           ports:
           - containerPort: 5050
           readinessProbe:
