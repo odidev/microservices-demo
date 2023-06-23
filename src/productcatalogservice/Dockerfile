@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.20.4-alpine@sha256:0a03b591c358a0bb02e39b93c30e955358dadd18dc507087a3b7f3912c17fe13 AS builder
+FROM golang:1.20.4-alpine AS builder
 RUN apk add --no-cache ca-certificates git
 RUN apk add build-base
 
@@ -26,7 +26,7 @@ COPY . .
 ARG SKAFFOLD_GO_GCFLAGS
 RUN go build -gcflags="${SKAFFOLD_GO_GCFLAGS}" -o /productcatalogservice .
 
-FROM alpine:3.18.2@sha256:82d1e9d7ed48a7523bdebc18cf6290bdb97b82302a8a9c27d4fe885949ea94d1
+FROM alpine:3.18.2
 RUN apk add --no-cache ca-certificates
 
 WORKDIR /src
